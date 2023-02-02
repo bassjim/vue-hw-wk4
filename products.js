@@ -29,7 +29,7 @@ const app = Vue.createApp({
               })
           }, 
         getProducts(page=1){
-            const url = `${this.apiUrl}api/${this.api_path}/admin/products/?page=${page}`;
+            const url = `${this.apiUrl}api/${this.api_path}/admin/products?page=${page}`;
             axios.get(`${url}`)
             .then((res)=>{
                 this.products = res.data.products;
@@ -105,7 +105,7 @@ const app = Vue.createApp({
         delProductModal = new bootstrap.Modal('#delProductModal');
     }
 }).component('product-modal',{
-    props:['tempProduct','updateProducts','addImg','deleteImg'],
+    props:['tempProduct','updateProduct','addImg','deleteImg'],
     template:'#product-modal-template'
 });
 app.mount("#app");
