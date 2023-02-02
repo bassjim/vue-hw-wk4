@@ -99,7 +99,7 @@ Vue.createApp({
     }
 })
 .mount("#app");
-app.components('product-model',{
+app.component('product-modal',{
     props:['tempPrduct','updateProduct'],
     template:'#product-modal-template'
 });
