@@ -111,7 +111,7 @@ const app = Vue.createApp({
         delProductModal = new bootstrap.Modal('#delProductModal');
     }
 }).component('product-modal',{
-    props:['tempProduct','updateProducts','addImg','deleteImg'],
+    props:['tempProduct','updateProducts','addImg','deleteImg','isNew'],
     template:'#product-modal-template'
 });
 app.mount("#app");

@@ -77,7 +77,7 @@
       <!-- Modal -->
       <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
            aria-hidden="true">
-          <product-modal :temp-product="tempProduct" :update-product="updateProducts"></product-modal>
+          <product-modal :temp-product="tempProduct" :update-product="updateProducts" :isNew="isNew"></product-modal>
       </div>
       <div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1"
            aria-labelledby="delProductModalLabel" aria-hidden="true">
@@ -129,6 +129,10 @@
                   <img class="img-fluid" :src="tempProduct.imageUrl" alt="">
                 </div>
                 <div>
+                  <!-- 需要先判斷imagesUrl是否是陣列 -->
+                  <!-- 如果沒有這句，imagesUrl又沒有圖片的話會出錯 -->
+                  <!-- 因為會沒有imagesUrl這個屬性但是v-for卻會一直往temproduct裡面找imagesurl(不存在) -->
+                  <!-- 解決方法是直接新增插入一比空資料到imagesurl裡-->
                   <h4>多圖設置</h4>
                   <!--判斷tempProduct.imagesUrl 是一個陣列-->
                   <div v-if="Array.isArray(tempProduct.imagesUrl)">
@@ -137,6 +141,9 @@
                       v-model="tempProduct.imagesUrl[key]">
                       <img :src="tempProduct.imagesUrl[key]" alt="" class="img-fluid">
                       <div>
+                          <!-- 如果(!tempProduct.imagesUrl陣列有無東西)||(tempProduct.imagesUrl最後一個有無值)  -->
+                          <!-- 如果(!tempProduct.imagesUrl陣列有東西)false||(tempProduct.imagesUrl最後一個無值)false  叫出delet按鈕-->
+                          <!-- 如果(!tempProduct.imagesUrl陣列無東西)true||(tempProduct.imagesUrl最後一個無值)false  叫出新增按鈕-->
                         <button class="btn btn-outline-primary btn-sm d-block w-100"
                           v-if="
                           !tempProduct.imagesUrl.length ||
@@ -150,16 +157,15 @@
                           刪除圖片
                         </button>
                       </div>              
-                    </template>
-                    <div>
-                      <button class="btn btn-outline-primary btn-sm d-block w-100"
-                        v-else
-                        @click="creatImg">
-                        新增圖片
-                      </button>                     
-                    </div>              
+                    </template>                
                   </div>                    
                   <!--判斷新增刪除出現的時機-->
+                  <div  v-else>
+                    <button class="btn btn-outline-primary btn-sm d-block w-100"                       
+                      @click="creatImg">
+                      新增圖片
+                    </button>                     
+                  </div>          
                 </div>
                     
               </div>
