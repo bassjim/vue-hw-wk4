@@ -90,6 +90,12 @@ const app = Vue.createApp({
         deleteImg(){
             this.tempProduct.imagesUrl.pop()
         },
+        creatImg(){
+            //當多圖的地方沒有東西
+            //建立一個陣列初始化，並且放入一筆空的資料
+            this.temproduct.imagesUrl = [];
+            this.temproduct.imagesUrl.push('');
+        }
     },
     components:{
         pagination,
@@ -105,7 +111,7 @@ const app = Vue.createApp({
         delProductModal = new bootstrap.Modal('#delProductModal');
     }
 }).component('product-modal',{
-    props:['tempProduct','updateProduct','addImg','deleteImg'],
+    props:['tempProduct','updateProducts','addImg','deleteImg'],
     template:'#product-modal-template'
 });
 app.mount("#app");
