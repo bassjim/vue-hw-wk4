@@ -1,4 +1,4 @@
-import pagination from './pagination';
+import pagination from './pagination.js';
 let productModal = null;
 let delProductModal = null;
 
@@ -12,11 +12,10 @@ Vue.createApp({
                 imagesUrl:[],
             },
             isNew:false,
+            page:{},
         };
     },
-    components:{
-        pagination,
-    },
+    
     methods:{  
         checkAdmin() {
             const url = `${this.apiUrl}/api/user/check`;
@@ -29,12 +28,13 @@ Vue.createApp({
                 window.location = 'login.html';
               })
           }, 
-        getProducts(){
-            const url = `${this.apiUrl}api/${this.api_path}/admin/products/all`;
+        getProducts(page=1){
+            const url = `${this.apiUrl}api/${this.api_path}/admin/products/?page=${page}`;
             axios.get(`${url}`)
             .then((res)=>{
                 this.products = res.data.products;
-                console.log(this.products);
+                this.page = res.data.pagination;
+                console.log(res);
             })
             .catch(err=>{
                 alert(err.response.data.message);
@@ -84,6 +84,10 @@ Vue.createApp({
             })
         }
     },
+    components:{
+        pagination,
+        
+    },
     mounted(){
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)myToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
         axios.defaults.headers.common['Authorization'] = token;
@@ -94,4 +98,8 @@ Vue.createApp({
         delProductModal = new bootstrap.Modal('#delProductModal');
     }
 })
-.mount("#app")
+.mount("#app");
+app.components('product-model',{
+    props:['tempPrduct','updateProduct'],
+    template:'#product-modal-template'
+});
