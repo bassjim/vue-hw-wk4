@@ -82,7 +82,14 @@ const app = Vue.createApp({
             .catch(err => {
                 console.error(err); 
             })
-        }
+        },
+        addImg(){
+            this.tempProduct.imagesUrl.push("")
+        },
+
+        deleteImg(){
+            this.tempProduct.imagesUrl.pop()
+        },
     },
     components:{
         pagination,
@@ -98,7 +105,7 @@ const app = Vue.createApp({
         delProductModal = new bootstrap.Modal('#delProductModal');
     }
 }).component('product-modal',{
-    props:['tempProduct','updateProduct'],
+    props:['tempProduct','updateProducts','addImg','deleteImg'],
     template:'#product-modal-template'
 });
 app.mount("#app");
