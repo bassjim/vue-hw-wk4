@@ -2,7 +2,7 @@ import pagination from './pagination.js';
 let productModal = null;
 let delProductModal = null;
 
-Vue.createApp({
+const app = Vue.createApp({
     data(){
         return{
             apiUrl:'https://vue3-course-api.hexschool.io/v2/',
@@ -86,7 +86,7 @@ Vue.createApp({
     },
     components:{
         pagination,
-        
+       
     },
     mounted(){
         const token = document.cookie.replace(/(?:(?:^|.*;\s*)myToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
@@ -97,9 +97,8 @@ Vue.createApp({
         productModal = new bootstrap.Modal('#productModal');
         delProductModal = new bootstrap.Modal('#delProductModal');
     }
-});
-app.component('product-modal',{
-    props:['tempPrduct','updateProduct'],
+}).component('product-modal',{
+    props:['tempProduct','updateProduct'],
     template:'#product-modal-template'
 });
 app.mount("#app");
