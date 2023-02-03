@@ -71,13 +71,14 @@
         </table>
         <pagination :pages = 'page'
           :get-products = "getProducts"
-          :change-page = "getProducts"
+          @change-page = "getProducts"
           ></pagination>
       </div>
       <!-- Modal -->
       <div id="productModal" ref="productModal" class="modal fade" tabindex="-1" aria-labelledby="productModalLabel"
            aria-hidden="true">
-          <product-modal :temp-product="tempProduct" :update-product="updateProducts" :isNew="isNew"></product-modal>
+          <product-modal :temp-product="tempProduct" :update-products="updateProducts" :is-new="isNew"
+          :add-img="addImg" :delete-img="deleteImg" :creat-img="createImg"></product-modal>
       </div>
       <div id="delProductModal" ref="delProductModal" class="modal fade" tabindex="-1"
            aria-labelledby="delProductModalLabel" aria-hidden="true">
@@ -97,7 +98,7 @@
               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                 取消
               </button>
-              <button type="button" class="btn btn-danger" @click="delProduct">
+              <button type="button" class="btn btn-danger" @click="delProducts">
                 確認刪除
               </button>
             </div>
@@ -128,46 +129,36 @@
                   </div>
                   <img class="img-fluid" :src="tempProduct.imageUrl" alt="">
                 </div>
-                <div>
-                  <!-- 需要先判斷imagesUrl是否是陣列 -->
-                  <!-- 如果沒有這句，imagesUrl又沒有圖片的話會出錯 -->
-                  <!-- 因為會沒有imagesUrl這個屬性但是v-for卻會一直往temproduct裡面找imagesurl(不存在) -->
-                  <!-- 解決方法是直接新增插入一比空資料到imagesurl裡-->
-                  <h4>多圖設置</h4>
-                  <!--判斷tempProduct.imagesUrl 是一個陣列-->
-                  <div v-if="Array.isArray(tempProduct.imagesUrl)">
-                    <template v-for="(img,key) in tempProduct.imagesUrl" :key="key +1234">
-                      <input type="text" class="form-control"
-                      v-model="tempProduct.imagesUrl[key]">
-                      <img :src="tempProduct.imagesUrl[key]" alt="" class="img-fluid">
-                      <div>
-                          <!-- 如果(!tempProduct.imagesUrl陣列有無東西)||(tempProduct.imagesUrl最後一個有無值)  -->
-                          <!-- 如果(!tempProduct.imagesUrl陣列有東西)false||(tempProduct.imagesUrl最後一個無值)false  叫出delet按鈕-->
-                          <!-- 如果(!tempProduct.imagesUrl陣列無東西)true||(tempProduct.imagesUrl最後一個無值)false  叫出新增按鈕-->
-                        <button class="btn btn-outline-primary btn-sm d-block w-100"
-                          v-if="
-                          !tempProduct.imagesUrl.length ||
-                          tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]"
-                          @click="addImg">
-                          新增圖片
-                        </button>
-                        <button class="btn btn-outline-danger btn-sm d-block w-100"
-                          v-else
-                          @click="deleteImg">
-                          刪除圖片
-                        </button>
-                      </div>              
-                    </template>                
-                  </div>                    
-                  <!--判斷新增刪除出現的時機-->
-                  <div  v-else>
-                    <button class="btn btn-outline-primary btn-sm d-block w-100"                       
-                      @click="creatImg">
+                  <!-- 如果(!tempProduct.imagesUrl陣列有無東西)||(tempProduct.imagesUrl最後一個有無值)  -->
+                  <!-- 如果(!tempProduct.imagesUrl陣列有東西)false||(tempProduct.imagesUrl最後一個無值)false  叫出delet按鈕-->
+                  <!-- 如果(!tempProduct.imagesUrl陣列無東西)true||(tempProduct.imagesUrl最後一個無值)false  叫出新增按鈕-->
+                <h3 class="mb-3">多圖新增</h3>
+                <div v-if="Array.isArray(tempProduct.imagesUrl)">
+                  <template class="mb-1" v-for="(image, key) in tempProduct.imagesUrl" :key="key +1234">
+                    <div class="mb-3">
+                      <label for="imageUrl" class="form-label">圖片網址</label>
+                      <input v-model="tempProduct.imagesUrl[key]" type="text" class="form-control"
+                        placeholder="請輸入圖片連結">
+                    </div>
+                    <img class="img-fluid" :src="image">
+                  </template>
+                  <div v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]">
+                    <button class="btn btn-outline-primary btn-sm d-block w-100"
+                      @click="addImg">
                       新增圖片
-                    </button>                     
-                  </div>          
+                    </button>
+                  </div>
+                  <div v-else>
+                    <button class="btn btn-outline-danger btn-sm d-block w-100" @click="deleteImg">
+                      刪除圖片
+                    </button>
+                  </div>
                 </div>
-                    
+                <div v-else>
+                  <button class="btn btn-outline-primary btn-sm d-block w-100" @click="createImages">
+                    新增圖片
+                  </button>
+                </div>
               </div>
               <div class="col-sm-8">
                 <div class="mb-3">
@@ -229,7 +220,7 @@
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
               取消
             </button>
-            <button type="button" class="btn btn-primary" @click="updateProduct">
+            <button type="button" class="btn btn-primary" @click="updateProducts">
               確認
             </button>
           </div>

@@ -29,7 +29,7 @@ const app = Vue.createApp({
               })
           }, 
         getProducts(page=1){
-            const url = `${this.apiUrl}api/${this.api_path}/admin/products?page=${page}`;
+            const url = `${this.apiUrl}api/${this.api_path}/admin/products/?page=${page}`;
             axios.get(`${url}`)
             .then((res)=>{
                 this.products = res.data.products;
@@ -84,13 +84,13 @@ const app = Vue.createApp({
             })
         },
         addImg(){
-            this.tempProduct.imagesUrl.push("")
+            this.tempProduct.imagesUrl.push('')
         },
 
         deleteImg(){
             this.tempProduct.imagesUrl.pop()
         },
-        creatImg(){
+        createImg(){
             //當多圖的地方沒有東西
             //建立一個陣列初始化，並且放入一筆空的資料
             this.temproduct.imagesUrl = [];
@@ -110,8 +110,9 @@ const app = Vue.createApp({
         productModal = new bootstrap.Modal('#productModal');
         delProductModal = new bootstrap.Modal('#delProductModal');
     }
-}).component('product-modal',{
-    props:['tempProduct','updateProducts','addImg','deleteImg','isNew'],
-    template:'#product-modal-template'
+});
+app.component('product-modal',{
+    props:['tempProduct','updateProducts','addImg','deleteImg','isNew','createImg'],
+    template:'#product-modal-template',
 });
 app.mount("#app");
