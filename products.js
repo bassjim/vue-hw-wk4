@@ -115,4 +115,8 @@ app.component('product-modal',{
     props:['tempProduct','updateProducts','addImg','deleteImg','isNew','createImg'],
     template:'#product-modal-template',
 });
+app.component('delproduct-modal',{
+    props:['tempProduct','delProducts'],
+    template:'#delproduct-modal-template',
+});
 app.mount("#app");
